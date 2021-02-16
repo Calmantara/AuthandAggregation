@@ -1,4 +1,4 @@
-# Code Test Authentication and Fetch
+# Authentication and Fetch
 
 This is code test project about Authentication and Fetch API. This project includes 2 folders, backend and frontend.
 Backend components are : 
