@@ -1,0 +1,12 @@
+BEGIN TRANSACTION;
+
+CREATE TABLE users (
+    id serial PRIMARY KEY,
+    name VARCHAR(100),
+    phone VARCHAR(100) UNIQUE NOT NULL,
+    role VARCHAR(100),
+    password VARCHAR(100),
+    joined TIMESTAMP NOT NULL
+);
+
+COMMIT;

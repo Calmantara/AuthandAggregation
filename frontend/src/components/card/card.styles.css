@@ -1,0 +1,15 @@
+.card-background {
+  border-radius: 3px;
+  background-color: #aaaaaa;
+  margin: 5px 5px 5px 5px;
+}
+.card-background:hover {
+  border-radius: 3px;
+  background-color: #dddddd;
+  margin: 5px 5px 5px 5px;
+}
+
+.admin-card-style {
+  display: grid;
+  grid-template-columns: repeat(3, 33.33%);
+}

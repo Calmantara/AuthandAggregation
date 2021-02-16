@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  #Postgres setup
+  postgres:
+    # image: postgres
+    container_name: postgres
+    build: ./postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_URL: postgres://admin:password@localhost:5432/postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOST: postgres
+    ports:
+      - "5432:5432"
+
+  #Redis setup
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+
+  # Backend
+  code-test-auth-api:
+    container_name: auth_backend
+    build: ./auth-backend
+    volumes:
+      - ./auth-backend/:/usr/src/auth-backend
+    working_dir: /usr/src/auth-backend
+    command: npm start
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      POSTGRES_URI: postgres://admin:password@postgres:5432/postgres
+      REDIS_URI: redis://redis:6379
+
+  # Backend
+  code-test-fetch-api:
+    container_name: fetch_backend
+    build: ./fetch-backend
+    volumes:
+      - ./fetch-backend/:/usr/src/fetch-backend
+    command: npm start
+    working_dir: /usr/src/fetch-backend
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      REDIS_URI: redis://redis:6379
+      DATA_SOURCE_URI: https://stein.efishery.com/v1/storages/5e1edf521073e315924ceab4/list
+      DATA_CONVERSION_URI: https://free.currconv.com/api/v7/convert?q=USD_IDR&compact=ultra&apiKey=b52d502f1ef1a5af39c2
+
+  #Frontend
+  code-test-frontend:
+    container_name: frontend
+    build: ../frontend
+    volumes:
+      - ../frontend/:/usr/src/frontend
+    command: npm start
+    working_dir: /usr/src/frontend
+    ports:
+      - "3000:3000"
+    environment:
+      AUTH_URI: http://127.0.0.1:5000
+      Fetch_URI: http://127.0.0.1:5001
+      
